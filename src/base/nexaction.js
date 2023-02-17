@@ -10,8 +10,9 @@ const CreateTrigger = ({
   once,
   duration,
 }) => {
+  let timer = false;
   if (duration) {
-    setTimeout(() => {
+    timer = setTimeout(() => {
       globalThis.nexAction.triggers.remove(id);
     }, duration);
   }
@@ -31,6 +32,7 @@ const CreateTrigger = ({
     group: group,
     enabled: enabled,
     once: once,
+    timer: timer,
   };
 };
 
@@ -52,17 +54,22 @@ const CreateHandler = () => {
   };
 
   const remove = (id) => {
+    const destroy = (index) => {
+      clearTimeout(reflexes[index].timer);
+      reflexes.splice(index, 1);
+    };
+
     if (typeof id === "string") {
       let index = reflexes.findIndex((e) => e.id === id);
       if (index >= 0) {
-        reflexes.splice(index, 1);
+        destroy(index);
       }
     } else if (Number.isInteger(id)) {
-      reflexes.splice(id, 1);
+      destroy(id);
     } else if (id instanceof RegExp) {
       let index = reflexes.findIndex((e) => e.reflex.source === id.source);
       if (index >= 0) {
-        reflexes.splice(index, 1);
+        destroy(index);
       }
     }
   };
@@ -91,6 +98,9 @@ const CreateHandler = () => {
   };
 
   const clear = () => {
+    reflexes.forEach((reflex) => {
+      clearTimeout(reflex.timer);
+    });
     reflexes.length = 0;
   };
 
