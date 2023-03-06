@@ -1,6 +1,6 @@
 {
   "name": "nexaction",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "nexAction for nexus",
   "main": "nexaction.min.js",
   "scripts": {
