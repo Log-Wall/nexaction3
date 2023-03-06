@@ -81,12 +81,12 @@ const CreateHandler = () => {
   };
 
   const process = (text) => {
-    for (let reflex of reflexes) {
+    for (const reflex of reflexes) {
       if (reflex.enabled === false) {
         continue;
       }
 
-      let args = text.match(reflex.regex);
+      const args = text.match(reflex.regex);
       if (args) {
         try {
           reflex.action(args);
